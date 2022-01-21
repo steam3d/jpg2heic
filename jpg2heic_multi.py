@@ -1,8 +1,8 @@
 '''
-Простой сприпт для декодирования .eps файлов содержаших DataMatrix штрихкод.
+Простой сприпт для конвертации jpg в heic файлов.
 При первом запуске скрипт создаст необходимые директории.
 Затем файлы eps скопируйте в папку input и запустите скрипт
-Дождитесь окончания результата. Извлеченные данные находятся в файле output.txt в папке output
+Дождитесь окончания результата. Сконвертированные файлы находятся в папке output
 '''
 
 from datetime import datetime
@@ -79,12 +79,12 @@ def save_data(file, out_folder, progress):
     path_heic_file = os.path.join(out_folder, heic_file_name)
 
     cmd_to_hevic = '"{heif_enc}" "{input}" -o "{output}"'
-    cmd_to_hevic = cmd_to_hevic.format(heif_enc="E:\Torrent\libheif-1.12.0-win64\heif-enc.exe",
+    cmd_to_hevic = cmd_to_hevic.format(heif_enc= os.path.join(os.getcwd(),"tools", "heif-enc.exe"),
                                        input=file,
                                        output=path_heic_file)
     # https://exiftool.org/index.html
     cmd_to_metadata = '"{exiftool}" -overwrite_original -tagsFromFile "{input}" -all:all "{output}"'
-    cmd_to_metadata = cmd_to_metadata.format(exiftool="E:\Torrent\libheif-1.12.0-win64\exiftool.exe",
+    cmd_to_metadata = cmd_to_metadata.format(exiftool=os.path.join(os.getcwd(),"tools", "exiftool.exe"),
                                              input=file,
                                              output=path_heic_file)
     #print(cmd_to_metadata)
@@ -136,7 +136,7 @@ def create_pool(files_list, output_file_path):
     """
     if len(files_list) == 0:
         print()
-        print(f"Файлы *.eps не найдены в '{get_file_name(path)}'")
+        print(f"Файлы *.jpg не найдены в '{get_file_name(path)}'")
         return
 
     if os.path.exists(output_file_path):
